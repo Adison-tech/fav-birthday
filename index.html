@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday, Stranger</title>
+    <title>Happy Birthday, Favorite Stranger</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Custom CSS for the Inter font and any overrides */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5; /* Light grey background */
-            color: #333;
+            background-color: #0d1a26; /* Darker, sleek futuristic background */
+            color: #e0e6ed; /* Lighter text for contrast */
             overflow-x: hidden; /* Prevent horizontal scroll */
         }
         /* Confetti animation */
@@ -36,7 +36,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.95); /* Slightly darker overlay */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -70,20 +70,21 @@
         .lightbox-close,
         .lightbox-nav {
             position: absolute;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
+            background: rgba(255, 255, 255, 0.1); /* More subtle background for futuristic feel */
+            color: cyan; /* Futuristic color for buttons */
+            border: 1px solid cyan; /* Thin border */
             padding: 0.5rem 1rem;
             cursor: pointer;
             font-size: 1.5rem;
             border-radius: 9999px; /* rounded-full */
-            transition: background 0.2s ease;
+            transition: background 0.2s ease, transform 0.2s ease;
             user-select: none; /* Prevent text selection on buttons */
         }
 
         .lightbox-close:hover,
         .lightbox-nav:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(0, 255, 255, 0.3); /* Cyan glow on hover */
+            transform: scale(1.05); /* Slight scale for interaction */
         }
 
         .lightbox-close {
@@ -168,6 +169,7 @@
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            color: #a2a5b3; /* Adjust color for dark background */
         }
         .wish-text.active {
             opacity: 1;
@@ -181,7 +183,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #f0f2f5; /* Match body background */
+            background-color: #0d1a26; /* Match new body background */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -196,95 +198,145 @@
             visibility: hidden;
             pointer-events: none; /* Allow clicks to pass through when hidden */
         }
+
+        /* Text Glow for Headings */
+        .glow-text {
+            text-shadow: 0 0 8px rgba(127, 255, 212, 0.8), /* Aqua glow */
+                         0 0 15px rgba(127, 255, 212, 0.6);
+            transition: text-shadow 0.3s ease-in-out;
+        }
+
+        /* Custom CSS for the animated border around the gallery */
+        @property --angle{
+            syntax: "<angle>";
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        .image-gallery-border {
+            position: relative; /* Needed for pseudo-elements positioning */
+            padding: 4px; /* Space for the border itself */
+            border-radius: 1.75rem; /* Match or slightly exceed inner rounded-xl (0.75rem) or rounded-3xl (1.5rem) */
+            background-clip: padding-box; /* Crucial: Keeps background inside border */
+            background-color: transparent; /* Ensure content background doesn't interfere */
+            z-index: 0; /* Ensure it's behind content */
+        }
+
+        .image-gallery-border::before,
+        .image-gallery-border::after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            /* Conic gradient with your specified colors */
+            background-image: conic-gradient(from var(--angle), green, blue, purple, red, green);
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            z-index: -1; /* Place behind the content */
+            padding: 3px; /* Creates the visible border width */
+            border-radius: 1.75rem; /* Match container border-radius */
+            animation: 3s spin linear infinite;
+        }
+
+        .image-gallery-border::before {
+            filter: blur(1.5rem); /* Creates the glowing effect */
+            opacity: 1; /* Increased opacity for the visible color shadow/glow */
+        }
+
+        .image-gallery-border::after {
+            /* Make the sharper border transparent */
+            opacity: 0;
+        }
+
+        @keyframes spin {
+            from {
+                --angle: 0deg;
+            }
+            to {
+                --angle: 360deg;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col p-4">
 
-    <!-- Background Audio -->
     <audio id="backgroundMusic" loop muted>
         <source src="audio/nyashinski_malaika_official_music_video_mp3_30171.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
-    <!-- Intro Screen -->
     <div id="introScreen">
-        <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 leading-tight mb-8 animate-pulse">
-            Happy Birthday, Fav Stranger ❤️
+        <h1 class="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 leading-tight mb-8 animate-pulse glow-text">
+            Happy Birthday, favorite stranger! ❤️
         </h1>
-        <p class="text-xl md:text-2xl text-gray-700 mb-12">
-            Click below to celebrate!
+        <p class="text-xl md:text-2xl text-gray-400 mb-12">
+            Click below to enter and celebrate!
         </p>
         <button id="enterButton" class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-4 px-8 rounded-full shadow-lg text-xl transition-all duration-300 ease-in-out transform hover:scale-105">
             🎉 Start the Celebration! 🎉
         </button>
     </div>
 
-    <!-- Main Content Container (initially hidden) -->
     <div id="mainContent" class="hidden w-full text-center my-8 p-6 md:p-10 lg:p-16 relative overflow-hidden">
-        <!-- Header Section -->
         <header class="mb-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 leading-tight mb-4 animate-pulse">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 leading-tight mb-4 animate-pulse glow-text">
                 Happy Birthday, <span id="friendName">Zaju</span>! ❤️
             </h1>
-            <p class="text-lg md:text-xl text-gray-700">
+            <p class="text-lg md:text-xl text-gray-400">
                 Wishing you a day filled with joy, laughter, and everything wonderful! 🥰
             </p>
         </header>
 
-        <!-- Container for side-by-side sections on larger screens -->
         <div class="flex flex-col lg:flex-row lg:justify-between gap-8">
-            <!-- Wishes Section - Aligned left -->
             <section class="mb-10 lg:w-1/2 flex justify-start">
                 <div class="w-full">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-left">My Wishes for you favorite stranger</h2>
-                    <div class="bg-purple-100 p-6 rounded-xl shadow-md text-left min-h-[150px] flex items-center justify-center">
-                        <p id="animatedWish" class="text-gray-800 italic text-lg md:text-xl text-center wish-text"></p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-200 mb-6 text-left glow-text">My Wishes for you fav stranger</h2>
+                    <div class="bg-blue-900 bg-opacity-30 p-6 rounded-xl shadow-md text-left min-h-[150px] flex items-center justify-center border border-blue-700">
+                        <p id="animatedWish" class="text-blue-200 italic text-lg md:text-xl text-center wish-text"></p>
                     </div>
                 </div>
             </section>
 
-            <!-- Photo Gallery Section - Aligned right -->
             <section class="mb-10 lg:w-1/2 flex justify-end">
-                <div class="w-full">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">Memories & Moments</h2>
-                    <div id="photoGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <!-- Gallery Cards with local image paths -->
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-144738.png" data-alt="Birthday Memory 1" style="background-image: url('images/Screenshot_20250630-144738.png');">
-                            <div class="gallery-card-overlay">Memory 1</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-142048.png" data-alt="Birthday Memory 2" style="background-image: url('images/Screenshot_20250630-142048.png');">
-                            <div class="gallery-card-overlay">Memory 2</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-144747.png" data-alt="Birthday Memory 3" style="background-image: url('images/Screenshot_20250630-144747.png');">
-                            <div class="gallery-card-overlay">Memory 3</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-142211.png" data-alt="Birthday Memory 4" style="background-image: url('images/Screenshot_20250630-142211.png');">
-                            <div class="gallery-card-overlay">Memory 4</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-142442.png" data-alt="Birthday Memory 5" style="background-image: url('images/Screenshot_20250630-142442.png');">
-                            <div class="gallery-card-overlay">Memory 5</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-144518.png" data-alt="Birthday Memory 6" style="background-image: url('images/Screenshot_20250630-144518.png');">
-                            <div class="gallery-card-overlay">Memory 6</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-144738.png" data-alt="Birthday Memory 7" style="background-image: url('images/Screenshot_20250630-144738.png');">
-                            <div class="gallery-card-overlay">Memory 7</div>
-                        </div>
-                        <div class="gallery-card" data-full-src="images/Screenshot_20250630-144949.png" data-alt="Birthday Memory 8" style="background-image: url('images/Screenshot_20250630-144949.png');">
-                            <div class="gallery-card-overlay">Memory 8</div>
+                <div class="image-gallery-border w-full relative">
+                    <div class="w-full relative z-10 bg-gray-800 rounded-3xl p-4"> <h2 class="text-3xl md:text-4xl font-bold text-gray-200 mb-6 text-center glow-text">Memories & Moments</h2>
+                        <div id="photoGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-144738.png" data-alt="Birthday Memory 1" style="background-image: url('images/Screenshot_20250630-144738.png');">
+                                <div class="gallery-card-overlay">Memory 1</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-142048.png" data-alt="Birthday Memory 2" style="background-image: url('images/Screenshot_20250630-142048.png');">
+                                <div class="gallery-card-overlay">Memory 2</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-144747.png" data-alt="Birthday Memory 3" style="background-image: url('images/Screenshot_20250630-144747.png');">
+                                <div class="gallery-card-overlay">Memory 3</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-142211.png" data-alt="Birthday Memory 4" style="background-image: url('images/Screenshot_20250630-142211.png');">
+                                <div class="gallery-card-overlay">Memory 4</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-142442.png" data-alt="Birthday Memory 5" style="background-image: url('images/Screenshot_20250630-142442.png');">
+                                <div class="gallery-card-overlay">Memory 5</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-144518.png" data-alt="Birthday Memory 6" style="background-image: url('images/Screenshot_20250630-144518.png');">
+                                <div class="gallery-card-overlay">Memory 6</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-144738.png" data-alt="Birthday Memory 7" style="background-image: url('images/Screenshot_20250630-144738.png');">
+                                <div class="gallery-card-overlay">Memory 7</div>
+                            </div>
+                            <div class="gallery-card" data-full-src="images/Screenshot_20250630-144949.png" data-alt="Birthday Memory 8" style="background-image: url('images/Screenshot_20250630-144949.png');">
+                                <div class="gallery-card-overlay">Memory 8</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- Footer Section -->
         <footer class="mt-10 text-gray-500 text-sm">
             <p>&copy; 2025 Created with ❤️ for Zaju ✨</p>
         </footer>
-    </main>
+    </div>
 
-    <!-- Lightbox Overlay -->
     <div id="lightboxOverlay" class="lightbox-overlay">
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="Full size image">
@@ -311,7 +363,7 @@
 
         // --- Update Friend's Name in HTML ---
         document.getElementById('friendName').textContent = FRIEND_NAME;
-        document.title = `Happy Birthday, ${FRIEND_NAME}`;
+        document.title = `Happy Birthday,fav ${FRIEND_NAME}`;
 
         // --- DOM Elements ---
         const backgroundMusic = document.getElementById('backgroundMusic');
@@ -415,15 +467,25 @@
         });
 
         // Mute/Unmute functionality for background audio
-        muteToggleButton.addEventListener('click', () => {
-            if (backgroundMusic.muted) {
-                backgroundMusic.muted = false;
-                muteToggleButton.textContent = '🔊 Mute';
-            } else {
-                backgroundMusic.muted = true;
-                muteToggleButton.textContent = '🔇 Unmute';
-            }
-        });
+        // The muteToggleButton element is not present in the HTML.
+        // If you need mute/unmute functionality, add a button with id="muteToggle" to your HTML.
+        // For example, right after the mainContent div:
+        /*
+        <button id="muteToggle" class="fixed bottom-4 right-4 bg-gray-800 text-white p-3 rounded-full shadow-lg z-50">
+            🔊 Mute
+        </button>
+        */
+        // If you add it, this event listener will then work.
+        // muteToggleButton.addEventListener('click', () => {
+        //     if (backgroundMusic.muted) {
+        //         backgroundMusic.muted = false;
+        //         muteToggleButton.textContent = '🔊 Mute';
+        //     } else {
+        //         backgroundMusic.muted = true;
+        //         muteToggleButton.textContent = '🔇 Unmute';
+        //     }
+        // });
+
 
         // Gallery Lightbox Event Listeners
         galleryCards.forEach((card, index) => {
